@@ -118,3 +118,10 @@ twoplustwo += setregconst("twoplustwo","numone",2)
 twoplustwo += setregconst("twoplustwo","numtwo",2)
 twoplustwo += addreg("twoplustwo","numone","numtwo","out")
 # finished
+#arraytest
+arraytest = init("arraytest",False)
+arraytest += setregconst("arraytest","in-1",1)
+arraytest += setregconst("arraytest","in-2",0)
+arraytest += setregconst("arraytest","in-3",1)
+arraytest += bitarraytonum("arraytest","out","in",3)
+#end
