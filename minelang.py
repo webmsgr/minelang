@@ -60,6 +60,14 @@ def command(comm):
 def onetick(commands):
     return commands
 
+def numtobitarray(progname,num,arr,bits=8):
+    pass #todo
+
+def andreg(progname,reg1,reg2,out):
+    pass #todo
+def notreg(progname,reg,out):
+    pass #todo
+
 def progtofile(prog,out):
     with open(os.path.join(out,"run.mcfunction"),"w") as file:
         file.write('\n'.join(prog))
