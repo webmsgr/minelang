@@ -153,3 +153,7 @@ makearraytest = lambda: makedatapack("webmsgr","arraytest",arraytest)
 tobitarray = init("tobitarray")
 tobitarray += numtobitarray("tobitarray",5,"input")
 maketobitarray = lambda: makedatapack("webmsgr","tobitarray",tobitarray)
+# tobitarray test
+bitarrayto = init("tobitarray")
+bitarrayto += bitarraytonum("tobitarray","out","input")
+makebitarrayto = lambda: makedatapack("webmsgr","bitarrayto",bitarrayto)
