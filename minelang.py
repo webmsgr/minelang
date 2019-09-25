@@ -141,12 +141,15 @@ twoplustwo += setdisplay("twoplustwo")
 twoplustwo += setregconst("twoplustwo","numone",2)
 twoplustwo += setregconst("twoplustwo","numtwo",2)
 twoplustwo += addreg("twoplustwo","numone","numtwo","out")
+maketwoplustwo = lambda: makedatapack("webmsgr","twoplustwo",twoplustwo)
 # finished
 #arraytest
 arraytest = init("arraytest",False)
 arraytest += numtobitarray("arraytest",5,"input")
 arraytest += bitarraytonum("arraytest","out","input")
+makearraytest = lambda: makedatapack("webmsgr","arraytest",arraytest)
 #end
 # tobitarray test
 tobitarray = init("tobitarray")
 tobitarray += numtobitarray("tobitarray",5,"input")
+maketobitarray = lambda: makedatapack("webmsgr","tobitarray",tobitarray)
