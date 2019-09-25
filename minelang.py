@@ -112,7 +112,7 @@ def andreg(progname,reg1,reg2,out,bits=8):
         comm += deletereg("{}-{}".format(array2,bit))
         comm += deletereg("{}-{}".format(temparray,bit))
     return comm
-    def notreg(progname,reg,out):
+def notreg(progname,reg,out):
     pass #todo
 
 def progtofile(prog,out):
