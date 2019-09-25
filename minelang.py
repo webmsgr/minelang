@@ -87,7 +87,7 @@ def bitarraytonum(progname,out,arr,bits=8):
     comm = []
     comm += setregconst(progname,out,0)
     for bit in range(1,bits+1):
-        comm += setregconst(progname,"mult",2**bit-1)
+        comm += setregconst(progname,"mult",2**(bit-1))
         comm += multreg(progname,"{}-{}".format(arr,bit),"mult","{}-{}-d".format(arr,bit))
     for bit in range(1,bits+1):
         comm += addreg(progname,out,"{}-{}-d".format(arr,bit),out)
