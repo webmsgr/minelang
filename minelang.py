@@ -81,7 +81,7 @@ def numtobitarray(progname,num,arr,bits=8):
     comm += setregconst(progname,"base",2)
     for bit in range(1,bits+1):
         comm += setregconst(progname,"{}-{}".format(arr,bit),0)
-    comm += setreg(progname,"in",num)
+    comm += setregconst(progname,"in",num)
     for bit in range(1,bits+1):
         arrindex = "{}-{}".format(arr,bit)
         comm += modreg(progname,"in","base",arrindex)
