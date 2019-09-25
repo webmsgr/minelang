@@ -140,7 +140,7 @@ def notreg(progname,reg,out,bits=8):
     comm += bitarraytonum(progname,out,array,bits)
     for bit in range(1,bits+1):
         comm += deletereg(progname,"{}-{}".format(array,bit))
-    comm += deletereg(progname,"static")
+    comm += deletereg(progname,static)
     return comm
 def progtofile(prog,out):
     with open(os.path.join(out,"run.mcfunction"),"w") as file:
