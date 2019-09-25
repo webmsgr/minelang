@@ -147,3 +147,6 @@ arraytest = init("arraytest",False)
 arraytest += numtobitarray("arraytest",5,"input")
 arraytest += bitarraytonum("arraytest","out","input")
 #end
+# tobitarray test
+tobitarray = init("tobitarray")
+tobitarray += numtobitarray("tobitarray",5,"input")
