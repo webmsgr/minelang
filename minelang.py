@@ -99,6 +99,7 @@ def bitarraytonum(progname,out,arr,bits=8):
     comm += deletereg(progname,"mult")
     return comm
 def andreg(progname,reg1,reg2,out,bits=8):
+    comm = []
     array1 = tempreg()
     array2 = tempreg()
     temparray = tempreg()
