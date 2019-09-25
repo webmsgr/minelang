@@ -109,9 +109,9 @@ def andreg(progname,reg1,reg2,out,bits=8):
         comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(temparray,bit))
     comm += bitarraytonum(progname,out,temparray)
     for bit in range(1,bits+1):
-        comm += deletereg("{}-{}".format(array1,bit))
-        comm += deletereg("{}-{}".format(array2,bit))
-        comm += deletereg("{}-{}".format(temparray,bit))
+        comm += deletereg(progname,"{}-{}".format(array1,bit))
+        comm += deletereg(progname,"{}-{}".format(array2,bit))
+        comm += deletereg(progname,"{}-{}".format(temparray,bit))
     return comm
 def notreg(progname,reg,out):
     pass #todo
