@@ -71,6 +71,18 @@ def modreg(progname,reg1,reg2,outreg):
     commands.append(commandify("scoreboard players operation {1} {0} %= {2} {0}".format(progname,outreg,reg2)))
     return commands
 
+def ifreg(progname,reg1,reg2,cond,command):
+    command = command[0]
+    if commandify("") in command:
+        command = uncommandify(command)
+    return ["execute as @s if score {1} {0} {2} {3} {0} run {4}".format(progname,reg1,cond,reg2,command)]
+def ifnotreg(progname,reg1,reg2,cond,command):
+    command = command[0]
+    if commandify("") in command:
+        command = uncommandify(command)
+    return ["execute as @s unless score {1} {0} {2} {3} {0} run {4}".format(progname,reg1,cond,reg2,command)]
+
+
 #T2 Bitwise
 def numtobitarray(progname,num,arr,bits=8):
     comm = []
@@ -103,19 +115,33 @@ def andreg(progname,reg1,reg2,out,bits=8):
     array1 = tempreg()
     array2 = tempreg()
     temparray = tempreg()
-    comm += numtobitarray(progname,reg1,array1)
-    comm += numtobitarray(progname,reg2,array2)
+    comm += numtobitarray(progname,reg1,array1,bits)
+    comm += numtobitarray(progname,reg2,array2,bits)
     for bit in range(1,bits+1):
         comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(temparray,bit))
-    comm += bitarraytonum(progname,out,temparray)
+    comm += bitarraytonum(progname,out,temparray,bits)
     for bit in range(1,bits+1):
         comm += deletereg(progname,"{}-{}".format(array1,bit))
         comm += deletereg(progname,"{}-{}".format(array2,bit))
         comm += deletereg(progname,"{}-{}".format(temparray,bit))
     return comm
-def notreg(progname,reg,out):
-    pass #todo
-
+def notreg(progname,reg,out,bits=8):
+    comm = []
+    array = tempreg()
+    inarray = tempreg()
+    static = tempreg()
+    comm += setregconst(progname,static,1)
+    comm += numtobitarray(progname,reg,inarray,bits)
+    for bit in range(1,bits+1):
+        comm += ifreg(progname,"{}-{}".format(inarray,bit),static,"=",setregconst(progname,"{}-{}".format(array,bit),0))
+        comm += ifnotreg(progname,"{}-{}".format(inarray,bit),static,"=",setregconst(progname,"{}-{}".format(array,bit),1))
+    for bit in range(1,bits+1):
+        comm += deletereg(progname,"{}-{}".format(inarray,bit))
+    comm += bitarraytonum(progname,out,array,bits)
+    for bit in range(1,bits+1):
+        comm += deletereg(progname,"{}-{}".format(array,bit))
+    comm += deletereg(progname,"static")
+    return comm
 def progtofile(prog,out):
     with open(os.path.join(out,"run.mcfunction"),"w") as file:
         file.write('\n'.join(prog))
@@ -169,3 +195,7 @@ andtest = init("andtest",False)
 andtest += setregconst("andtest","in1",5)
 andtest += setregconst("andtest","in2",6)
 andtest += andreg("andtest","in1","in2","out") # out should be 4
+# not test
+nottest = init("nottest",False)
+nottest += setregconst("nottest","in1",5)
+nottest += notreg("nottest","in1","out") # should be 250
