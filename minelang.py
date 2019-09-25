@@ -82,6 +82,9 @@ def numtobitarray(progname,num,arr,bits=8):
         arrindex = "{}-{}".format(arr,bit)
         comm += modreg(progname,"in","base",arrindex)
         comm += divreg(progname,"in","base","in")
+    for bit in range(1,bits+1):
+        comm += deletereg(progname,"in")
+        comm += deletereg(progname,"base")
     return comm
 def bitarraytonum(progname,out,arr,bits=8):
     comm = []
@@ -91,6 +94,8 @@ def bitarraytonum(progname,out,arr,bits=8):
         comm += multreg(progname,"{}-{}".format(arr,bit),"mult","{}-{}-d".format(arr,bit))
     for bit in range(1,bits+1):
         comm += addreg(progname,out,"{}-{}-d".format(arr,bit),out)
+    for bit  in range(1,bits+1):
+        comm += deletereg(progname,"{}-{}-d".format(arr,bit))
     comm += deletereg(progname,"mult")
     return comm
 def andreg(progname,reg1,reg2,out):
