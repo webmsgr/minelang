@@ -47,7 +47,8 @@ def subreg(progname,reg1,reg2,outreg):
     return commands
 def multreg(progname,reg1,reg2,outreg):
     commands = []
-    commands += setreg(progname,outreg,reg1)
+    if not outreg == reg1:
+        commands += setreg(progname,outreg,reg1)
     commands.append(commandify("scoreboard players operation {1} {0} *= {2} {0}".format(progname,outreg,reg2)))
     return commands
 def divreg(progname,reg1,reg2,outreg):
