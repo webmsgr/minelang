@@ -19,7 +19,7 @@ os.mkdir = mk
 def commandify(command):
     return "execute as @s run "+command
 def tempreg():
-    return ''.join([random.choice(string.ascii_letters) for n in range(16)])
+    return ''.join([random.choice(string.ascii_letters) for _ in range(16)])
 def init(progname,domessage=False):
     c = []
     if domessage:
