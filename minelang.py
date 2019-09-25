@@ -77,7 +77,7 @@ def numtobitarray(progname,num,arr,bits=8):
     comm += setregconst(progname,"base",2)
     for bit in range(1,bits+1):
         comm += setregconst(progname,"{}-{}".format(arr,bit),0)
-    comm += setregconst(progname,"in",num)
+    comm += setreg(progname,"in",num)
     for bit in range(1,bits+1):
         arrindex = "{}-{}".format(arr,bit)
         comm += modreg(progname,"in","base",arrindex)
@@ -98,9 +98,21 @@ def bitarraytonum(progname,out,arr,bits=8):
         comm += deletereg(progname,"{}-{}-d".format(arr,bit))
     comm += deletereg(progname,"mult")
     return comm
-def andreg(progname,reg1,reg2,out):
-    pass #todo
-def notreg(progname,reg,out):
+def andreg(progname,reg1,reg2,out,bits=8):
+    array1 = tempreg()
+    array2 = tempreg()
+    temparray = tempreg()
+    comm += numtobitarray(progname,reg1,array1)
+    comm += numtobitarray(progname,reg2,array2)
+    for bit in range(1,bits+1):
+        comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(temparray,bit))
+    comm += bitarraytonum(progname,out,temparray)
+    for bit in range(1,bits+1):
+        comm += deletereg("{}-{}".format(array1,bit))
+        comm += deletereg("{}-{}".format(array2,bit))
+        comm += deletereg("{}-{}".format(temparray,bit))
+    return comm
+    def notreg(progname,reg,out):
     pass #todo
 
 def progtofile(prog,out):
@@ -146,15 +158,13 @@ maketwoplustwo = lambda: makedatapack("webmsgr","twoplustwo",twoplustwo)
 # finished
 #arraytest
 arraytest = init("arraytest",False)
-arraytest += numtobitarray("arraytest",5,"input")
+arraytest += setregconst("arraytest","inp",5)
+arraytest += numtobitarray("arraytest","inp","input")
 arraytest += bitarraytonum("arraytest","out","input")
 makearraytest = lambda: makedatapack("webmsgr","arraytest",arraytest)
 #end
-# tobitarray test
-tobitarray = init("tobitarray")
-tobitarray += numtobitarray("tobitarray",5,"input")
-maketobitarray = lambda: makedatapack("webmsgr","tobitarray",tobitarray)
-# tobitarray test
-bitarrayto = init("tobitarray")
-bitarrayto += bitarraytonum("tobitarray","out","input")
-makebitarrayto = lambda: makedatapack("webmsgr","bitarrayto",bitarrayto)
+# and test
+andtest = init("andtest",False)
+andtest += setregconst("andtest","in1",5)
+andtest += setregconst("andtest","in2",6)
+andtest += andreg("andtest","in1","in2","out") # out should be 4
