@@ -20,8 +20,11 @@ def commandify(command):
     return "execute as @s run "+command
 def tempreg():
     return ''.join([random.choice(string.ascii_letters) for n in xrange(16)])
-def init(progname):
-    return [commandify("say running program {}".format(progname)),commandify("scoreboard objectives add {} dummy".format(progname))]
+def init(progname,domessage=False):
+    c = []
+    if domessage:
+        c = [commandify("say running program {}".format(progname))]
+    return c+[commandify("scoreboard objectives add {} dummy".format(progname))]
 def setdisplay(progname):
     return [commandify("scoreboard objectives setdisplay sidebar {}".format(progname).strip())]
 
@@ -91,7 +94,7 @@ def makedatapack(author,progname,prog):
         
     os.chdir("../..")
 # two plus two example program  
-twoplustwo = init("twoplustwo")
+twoplustwo = init("twoplustwo",False)
 twoplustwo += setdisplay("twoplustwo")
 twoplustwo += setregconst("twoplustwo","numone",2)
 twoplustwo += setregconst("twoplustwo","numtwo",2)
