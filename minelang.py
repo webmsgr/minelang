@@ -14,7 +14,8 @@ def mk(o):
 os.mkdir = mk
 #whymustidothis
 
-
+def uncommandify(command):
+    return command.replace(commandify(""),"",1)
 # Base
 def commandify(command):
     return "execute as @s run "+command
@@ -66,9 +67,26 @@ def command(comm):
     return commandify(comm)
 def onetick(commands):
     return commands
+def modreg(progname,reg1,reg2,outreg):
+    commands = []
+    if not outreg == reg1:
+        commands += setreg(progname,outreg,reg1)
+    commands += setreg(progname,outreg,reg1)
+    commands.append(commandify("scoreboard players operation {1} {0} %= {2} {0}".format(progname,outreg,reg2)))
+    return commands
 
+#T2 Bitwise
 def numtobitarray(progname,num,arr,bits=8):
-    pass #todo
+    comm = []
+    comm += setregconst(progname,"base",2)
+    for bit in range(1,bits+1):
+        comm += setregconst(progname,"{}-{}".format(arr,bit),0)
+    comm += setreg(progname,"in",num)
+    for bit in range(1,bits+1):
+        arrindex = "{}-{}".format(arr,bit)
+        comm += modreg(progname,"in","base",arrindex)
+        comm += divreg(progname,"in","base","in")
+    return comm
 def bitarraytonum(progname,out,arr,bits=8):
     comm = []
     comm += setregconst(progname,out,0)
@@ -126,8 +144,6 @@ twoplustwo += addreg("twoplustwo","numone","numtwo","out")
 # finished
 #arraytest
 arraytest = init("arraytest",False)
-arraytest += setregconst("arraytest","in-1",1)
-arraytest += setregconst("arraytest","in-2",0)
-arraytest += setregconst("arraytest","in-3",1)
-arraytest += bitarraytonum("arraytest","out","in",3)
+arraytest += numtobitarray("arraytest",5,"input")
+arraytest += bitarraytonum("arraytest","out","input")
 #end
