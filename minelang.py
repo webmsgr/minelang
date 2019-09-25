@@ -4,7 +4,7 @@ import os
 import json
 from zipfile import ZipFile
 
-#not good code
+#not very good code
 os.nmkdir = os.mkdir
 def mk(o):
     try:
