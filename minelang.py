@@ -19,7 +19,7 @@ os.mkdir = mk
 def commandify(command):
     return "execute as @s run "+command
 def tempreg():
-    return ''.join([random.choice(string.ascii_letters) for n in xrange(16)])
+    return ''.join([random.choice(string.ascii_letters) for n in range(16)])
 def init(progname,domessage=False):
     c = []
     if domessage:
@@ -44,7 +44,7 @@ def subreg(progname,reg1,reg2,outreg):
     commands = []
     commands += setreg(progname,outreg,reg1)
     commands.append(commandify("scoreboard players operation {1} {0} -= {2} {0}".format(progname,outreg,reg2)))
-    return commands                    
+    return commands
 def multreg(progname,reg1,reg2,outreg):
     commands = []
     commands += setreg(progname,outreg,reg1)
@@ -62,7 +62,16 @@ def onetick(commands):
 
 def numtobitarray(progname,num,arr,bits=8):
     pass #todo
-
+def bitarraytonum(progname,out,arr,bits=8):
+    comm = []
+    comm += setregconst(progname,out,0)
+    for bit in range(1,bits+1):
+        comm += setreg(progname,"mult",2**bit)
+        comm += multreg(progname,"ar{}{}".format(arr,bit),"mult","ar{}{}".format(arr,bit))
+    for bit in range(1,bits+1):
+        comm += addreg(progname,out,"ar{}{}".format(arr,bit),out)
+    comm += deletereg(progname,"mult")
+    return comm
 def andreg(progname,reg1,reg2,out):
     pass #todo
 def notreg(progname,reg,out):
@@ -91,17 +100,17 @@ def makedatapack(author,progname,prog):
         file.write(json.dumps(data))
     progtofile(prog,os.path.join("data",author,"functions",progname))
     print("zipping up")
-    
+
     with ZipFile('{}-{}.zip'.format(author,progname), 'w') as myzip:
-        myzip.write("pack.mcmeta".format(progname))
+        myzip.write("pack.mcmeta")
         myzip.write("data/")
         myzip.write("data/"+author)
         myzip.write("data/"+author+"/functions/")
         myzip.write("data/"+author+"/functions/"+progname)
         myzip.write("data/"+author+"/functions/"+progname+"/run.mcfunction")
-        
+
     os.chdir("../..")
-# two plus two example program  
+# two plus two example program
 twoplustwo = init("twoplustwo",False)
 twoplustwo += setdisplay("twoplustwo")
 twoplustwo += setregconst("twoplustwo","numone",2)
