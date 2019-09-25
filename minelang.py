@@ -2,6 +2,7 @@ import random
 import string
 import os
 import json
+from zipfile import ZipFile
 
 #not good code
 os.nmkdir = os.mkdir
@@ -60,6 +61,7 @@ def progtofile(prog,out):
     with open(os.path.join(out,"run.mcfunction"),"w") as file:
         file.write('\n'.join(prog))
 def makedatapack(author,progname,prog):
+    author, progname = author.lower(),progname.lower()
     print("Creating build directories")
     try:
         os.mkdir("build")
@@ -67,18 +69,27 @@ def makedatapack(author,progname,prog):
         pass
     builddir = ".\\build\\"+progname
     os.mkdir(builddir)
-    os.mkdir(os.path.join(builddir,"data"))
-    os.mkdir(os.path.join(builddir,"data",author))
-    os.mkdir(os.path.join(builddir,"data",author,"functions"))
-    os.mkdir(os.path.join(builddir,"data",author,"functions",progname))
+    os.chdir(builddir)
+    os.mkdir("data")
+    os.mkdir(os.path.join("data",author))
+    os.mkdir(os.path.join("data",author,"functions"))
+    os.mkdir(os.path.join("data",author,"functions",progname))
     print("writing files")
-    with open(builddir+"\pack.mcmeta","w") as file:
+    with open("pack.mcmeta","w") as file:
         data = {"pack": {"pack_format": 1,"description": "{} by {}".format(progname,author)}}
         file.write(json.dumps(data))
-    progtofile(prog,os.path.join(builddir,"data",author,"functions",progname))
+    progtofile(prog,os.path.join("data",author,"functions",progname))
     print("zipping up")
-
-
+    
+    with ZipFile('{}-{}.zip'.format(author,progname), 'w') as myzip:
+        myzip.write("pack.mcmeta".format(progname))
+        myzip.write("data/")
+        myzip.write("data/"+author)
+        myzip.write("data/"+author+"/functions/")
+        myzip.write("data/"+author+"/functions/"+progname)
+        myzip.write("data/"+author+"/functions/"+progname+"/run.mcfunction")
+        
+    os.chdir("../..")
 # two plus two example program  
 twoplustwo = init("twoplustwo")
 twoplustwo += setdisplay("twoplustwo")
