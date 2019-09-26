@@ -3,6 +3,8 @@ import string
 import os
 import json
 from zipfile import ZipFile
+import shlex
+
 
 #not very good code
 os.nmkdir = os.mkdir
@@ -20,7 +22,7 @@ def uncommandify(command):
 def commandify(command):
     return "execute as @s run "+command
 def tempreg():
-    return ''.join([random.choice(string.ascii_letters) for _ in range(16)])
+    return ''.join([random.choice(string.ascii_letters) for _ in range(12)])
 def init(progname,domessage=False):
     c = []
     if domessage:
@@ -110,21 +112,28 @@ def bitarraytonum(progname,out,arr,bits=8):
         comm += deletereg(progname,"{}-{}-d".format(arr,bit))
     comm += deletereg(progname,"mult")
     return comm
+def andregbit(progname,array1,array2,out,bits=8):
+    comm = []
+    for bit in range(1,bits+1):
+        comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(out,bit))
+    return comm
 def andreg(progname,reg1,reg2,out,bits=8):
     comm = []
     array1 = tempreg()
     array2 = tempreg()
-    temparray = tempreg()
+    outarray = tempreg()
     comm += numtobitarray(progname,reg1,array1,bits)
     comm += numtobitarray(progname,reg2,array2,bits)
-    for bit in range(1,bits+1):
-        comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(temparray,bit))
-    comm += bitarraytonum(progname,out,temparray,bits)
+    comm += andregbit(progname,array1,array2,outarray,bits)
+    comm += bitarraytonum(progname,out,outarray,bits)
     for bit in range(1,bits+1):
         comm += deletereg(progname,"{}-{}".format(array1,bit))
         comm += deletereg(progname,"{}-{}".format(array2,bit))
-        comm += deletereg(progname,"{}-{}".format(temparray,bit))
+        comm += deletereg(progname,"{}-{}".format(outarray,bit))
     return comm
+
+def notregbit():
+    pass
 def notreg(progname,reg,out,bits=8):
     sub = 2**bits-1
     regs = tempreg()
