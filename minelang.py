@@ -17,13 +17,13 @@ os.mkdir = mk
 #whymustidothis
 
 def uncommandify(command):
-    return command.replace(commandify(""),"",1)
+    return command.replace(commandify(""), "", 1)
 # Base
 def commandify(command):
     return "execute as @s run "+command
 def tempreg():
     return ''.join([random.choice(string.ascii_letters) for _ in range(12)])
-def init(progname,domessage=False):
+def init(progname, domessage=False):
     c = []
     if domessage:
         c = [commandify("say running program {}".format(progname))]
@@ -32,12 +32,12 @@ def setdisplay(progname):
     return [commandify("scoreboard objectives setdisplay sidebar {}".format(progname).strip())]
 
 # T1 Low Level
-def setreg(progname,regto,regfrom):
-    return [commandify("scoreboard players operation {1} {0} = {2} {0}".format(progname,regto,regfrom))]
-def setregconst(progname,reg,value):
-    return [commandify("scoreboard players set {} {} {}".format(reg,progname,value))]
-def deletereg(progname,reg):
-    return [commandify("scoreboard players reset {} {}".format(reg,progname))]
+def setreg(progname, regto, regfrom):
+    return [commandify("scoreboard players operation {1} {0} = {2} {0}".format(progname, regto, regfrom))]
+def setregconst(progname, reg, value):
+    return [commandify("scoreboard players set {} {} {}".format(reg, progname, value))]
+def deletereg(progname, reg):
+    return [commandify("scoreboard players reset {} {}".format(reg, progname))]
 def addreg(progname,reg1,reg2,outreg):
     commands = []
     if not outreg == reg1:
