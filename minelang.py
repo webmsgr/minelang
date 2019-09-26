@@ -142,6 +142,15 @@ def notreg(progname,reg,out,bits=8):
         comm += deletereg(progname,"{}-{}".format(array,bit))
     comm += deletereg(progname,static)
     return comm
+
+
+def nand(progname,reg1,reg2,out,bits=8):
+    comm = []
+    temp = tempreg()
+    comm += andreg(progname,reg1,reg2,temp,bits)
+    comm += notreg(progname,temp,out,bits)
+    comm += deletereg(progname,temp)
+    return comm
 def progtofile(prog,out):
     with open(os.path.join(out,"run.mcfunction"),"w") as file:
         file.write('\n'.join(prog))
