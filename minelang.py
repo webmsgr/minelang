@@ -112,7 +112,7 @@ def bitarraytonum(progname,out,arr,bits=8):
         comm += deletereg(progname,"{}-{}-d".format(arr,bit))
     comm += deletereg(progname,"mult")
     return comm
-# @todo make and take in 2 bitarrays
+# @todo make and take in 2 bitarrays and return a bitarray
 # @body chaining with less commands!
 def andreg(progname,reg1,reg2,out,bits=8):
     comm = []
