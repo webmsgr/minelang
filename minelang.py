@@ -126,21 +126,11 @@ def andreg(progname,reg1,reg2,out,bits=8):
         comm += deletereg(progname,"{}-{}".format(temparray,bit))
     return comm
 def notreg(progname,reg,out,bits=8):
-    comm = []
-    array = tempreg()
-    inarray = tempreg()
-    static = tempreg()
-    comm += setregconst(progname,static,1)
-    comm += numtobitarray(progname,reg,inarray,bits)
-    for bit in range(1,bits+1):
-        comm += ifreg(progname,"{}-{}".format(inarray,bit),static,"=",setregconst(progname,"{}-{}".format(array,bit),0))
-        comm += ifnotreg(progname,"{}-{}".format(inarray,bit),static,"=",setregconst(progname,"{}-{}".format(array,bit),1))
-    for bit in range(1,bits+1):
-        comm += deletereg(progname,"{}-{}".format(inarray,bit))
-    comm += bitarraytonum(progname,out,array,bits)
-    for bit in range(1,bits+1):
-        comm += deletereg(progname,"{}-{}".format(array,bit))
-    comm += deletereg(progname,static)
+    sub = 2**bits-1
+    regs = tempreg()
+    comm = setregconst(progname,regs,sub)
+    comm += subreg(progname,regs,reg,out)
+    comm += deletereg(progname,regs)
     return comm
 
 
