@@ -61,7 +61,7 @@ def divreg(progname,reg1,reg2,outreg):
     commands.append(commandify("scoreboard players operation {1} {0} /= {2} {0}".format(progname,outreg,reg2)))
     return commands
 def command(comm):
-    return commandify(comm)
+    return [commandify(comm)]
 def onetick(commands):
     return commands
 def modreg(progname,reg1,reg2,outreg):
