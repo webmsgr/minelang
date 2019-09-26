@@ -84,6 +84,8 @@ def ifnotreg(progname,reg1,reg2,cond,command):
 
 
 #T2 Bitwise
+# @todo more logic gates
+# @body you cant have enough logic gates
 def numtobitarray(progname,num,arr,bits=8):
     comm = []
     comm += setregconst(progname,"base",2)
