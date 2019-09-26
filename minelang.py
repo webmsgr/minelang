@@ -86,6 +86,8 @@ def ifnotreg(progname,reg1,reg2,cond,command):
 
 
 #T2 Bitwise
+# @todo more logic gates
+# @body you cant have enough logic gates
 def numtobitarray(progname,num,arr,bits=8):
     comm = []
     comm += setregconst(progname,"base",2)
@@ -112,11 +114,16 @@ def bitarraytonum(progname,out,arr,bits=8):
         comm += deletereg(progname,"{}-{}-d".format(arr,bit))
     comm += deletereg(progname,"mult")
     return comm
+<<<<<<< HEAD
 def andregbit(progname,array1,array2,out,bits=8):
     comm = []
     for bit in range(1,bits+1):
         comm += multreg(progname,"{}-{}".format(array1,bit),"{}-{}".format(array2,bit),"{}-{}".format(out,bit))
     return comm
+=======
+# @todo make and take in 2 bitarrays and return a bitarray
+# @body chaining with less commands!
+>>>>>>> 4921817a8e7140b3733adc62f894ba213d45240d
 def andreg(progname,reg1,reg2,out,bits=8):
     comm = []
     array1 = tempreg()
